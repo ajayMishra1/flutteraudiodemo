@@ -2,142 +2,91 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
-typedef void OnError(Exception exception);
+import 'Socket_bloc.dart';
+import 'TagValues.dart';
 
-void main() {
-  runApp(new MaterialApp(home: new ExampleApp()));
-}
+void main() => runApp(MyApp());
 
-class ExampleApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
   @override
-  _ExampleAppState createState() => new _ExampleAppState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
+    );
+  }
 }
 
-class _ExampleAppState extends State<ExampleApp> {
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key key, this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
 
   AudioPlayer advancedPlayer;
   AudioCache audioCache;
-  AudioPlayer advancedPlayer1;
-  AudioCache audioCache1;
-  AudioPlayer advancedPlayer2;
-  
-  AudioCache audioCache2;
+  SocketBloc _socketBloc;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
+    _socketBloc = new SocketBloc();
+    _socketBloc.connect();
     initPlayer();
   }
 
-  void initPlayer(){
+  void initPlayer() {
     advancedPlayer = new AudioPlayer();
     audioCache = new AudioCache(fixedPlayer: advancedPlayer);
-
-    advancedPlayer1 = new AudioPlayer();
-    audioCache1 = new AudioCache(fixedPlayer: advancedPlayer1);
-
-    advancedPlayer2 = new AudioPlayer();
-    audioCache2 = new AudioCache(fixedPlayer: advancedPlayer2);
-
   }
 
-  String localFilePath;
-
-  Widget _tab(List<Widget> children) {
-    return Center(
-      child: Container(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          children: children
-              .map((w) => Container(child: w, padding: EdgeInsets.all(6.0)))
-              .toList(),
-        ),
-      ),
-    );
-  }
-
-  Widget _btn(String txt, VoidCallback onPressed) {
-    return ButtonTheme(
-        minWidth: 48.0,
-        child: RaisedButton(child: Text(txt), onPressed: onPressed));
-  }
-
-  Widget localAsset() {
-    return _tab([
-      Text('Demo for local audio file play'),
-      _btn('Play', () {
-        playfirst();
-      }),
-      _btn('loop', () {
-        playsecond();
-      }),
-      _btn('play', ()
-      {
-        playthird();
-      }),
-      _btn('play multiple at a time', () {
-        playmultiple();
-      }),
-
-      _btn('Stop All', () {
-        stopall();
-      }),
-     // slider()
-    ]);
-  }
-
-  void playfirst(){
+  void playfirst() {
     audioCache.play('audio1.mp3');
-    advancedPlayer1.stop();
-    advancedPlayer2.stop();
   }
 
-  void playsecond(){
-
-    audioCache1.loop('audio.mp3');
+  void stop() {
     advancedPlayer.stop();
-    advancedPlayer2.stop();
-
-  }
-
-  void playthird(){
-    audioCache2.play('audio2.mp3');
-    advancedPlayer.stop();
-    advancedPlayer1.stop();
-  }
-  void playmultiple(){
-    advancedPlayer.stop();
-    advancedPlayer1.stop();
-    advancedPlayer2.stop();
-    audioCache.loop('audio1.mp3');
-    audioCache1.loop('audio.mp3');
-
-  }
-
-  void stopall(){
-    advancedPlayer.stop();
-    advancedPlayer1.stop();
-    advancedPlayer2.stop();
-
   }
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 1,
-      child: Scaffold(
-        appBar: AppBar(
-          bottom: TabBar(
-            tabs: [
-              Tab(text: 'Audio file demo'),
-            ],
-          ),
-          title: Text(''),
-        ),
-        body: TabBarView(
-          children: [localAsset()],
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
       ),
+      body: Center(
+        child: Column(
+          children: <Widget>[
+            Text(_socketBloc.data.toString()),
+            RaisedButton(
+                child: Text("Drum"), onPressed:()=> _socketBloc.sendDataToSocket('"${TagValues.PLAY_INSTUMENT}",{"Drum"}')),
+            RaisedButton(
+                child: Text("Trebble"),  onPressed: ()=>
+                _socketBloc.sendDataToSocket('"${TagValues.PLAY_INSTUMENT}",{"Trebble"}')),
+            RaisedButton(
+                child: Text("Dish"),  onPressed: ()=>
+                _socketBloc.sendDataToSocket('"${TagValues.PLAY_INSTUMENT}",{"Dish"}')),
+
+
+            ButtonTheme(
+                minWidth: 48.0,
+                child: RaisedButton(
+                    child: Text("play"), onPressed: playfirst)),
+              ButtonTheme(
+                  minWidth: 48.0,
+                  child: RaisedButton(child: Text("stop"), onPressed: stop))
+          ],
+        ),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
