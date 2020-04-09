@@ -96,7 +96,7 @@ String _firstSelected ;
         URI,
 
         enableLogging: false,
-        transports: [/*Transports.WEB_SOCKET*/ Transports.POLLING] //Enable required transport
+        transports: [Transports.POLLING] //Enable required transport
     ));
     socket.onConnect((data) {
       pprint("connected...");
