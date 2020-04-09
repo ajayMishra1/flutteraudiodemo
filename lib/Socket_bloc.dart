@@ -3,32 +3,37 @@ import 'dart:convert';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 import 'TagValues.dart';
 //Todo create by Parth Pitroda
 
 class SocketBloc with ChangeNotifier {
   IOWebSocketChannel channel;
-  List<String> _data = new List();
+  List<String> _getData = new List();
   JsonDecoder _decoder = new JsonDecoder();
   bool _isConnected = false;
 
-  get data => _data;
+  get getData => _getData;
 
   get isConnected => _isConnected;
 
-  set data(List<String> data) {
-    if (data != _data) {
-      _data = data;
+  set getData(List<String> data1) {
+    if (data1 != _getData) {
+      _getData = data1;
       notifyListeners();
     }
   }
 
-  set isConnected(bool data){
-    if(data){
-      sendDataToSocket('"${TagValues.JOIN_JAM}",{"name":"manthan"}');
+  set isConnected(bool connect){
+    if(connect){
+            print("ajay mishra111");
+
+     // sendDataToSocket('"${TagValues.JOIN_JAM}",{"name":"manthan"}');
+     
+     sendDataToSocket("'joinjam', {'name': 'Manthan'}'");
     }
 
-    _isConnected = data;
+    _isConnected = connect;
     notifyListeners();
   }
 
@@ -47,25 +52,30 @@ class SocketBloc with ChangeNotifier {
 
     print("@@@@@@@@@"+"received!"+data);
 
+ 
+
 //    _data.add(TradeLiveData.fromJson(_decoder.convert(data)[0]));
   }
 
-  void sendDataToSocket(String data) {
+  void sendDataToSocket(String strsend) {
     if (channel != null) {
 //       channel.sink.add('{"action":"$action","params":"$params"}');
-       channel.sink.add(data);
+
+      print("ajay mishra");
+       channel.sink.add(strsend);
     }
   }
 
+void errorHandler(err){
+    print(err.runtimeType.toString());
+    WebSocketChannelException ex = err;
+    print(ex.message);
+        isConnected = false;
 
-  void errorHandler(error, StackTrace trace){
-    _data.clear();
-    print("@@@@@@@@@ socket error"+error);
-    isConnected = false;
   }
 
   void doneHandler(){
-    print("@@@@@@@@@ socket closed");
+  //  print("@@@@@@@@@ socket closed");
     isConnected = true;
   }
 

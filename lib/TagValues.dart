@@ -1,5 +1,5 @@
 class TagValues {
-  static const String BaseUrl = "http://oneclickitmarketing.co.in:3333";
+  static const String BaseUrl = "wss://jamunity.oneclickitmarketing.co.in";
 
   //socket url
   static const String JOIN_JAM = "joinjam";
