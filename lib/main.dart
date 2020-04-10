@@ -125,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
       audioCache2.play("khanjari.mp3");
 
     }else if(str == "Clave"){
-      audioCache2.play("clave.mp3");
+      audioCache3.play("clave.mp3");
 
     }
   }
