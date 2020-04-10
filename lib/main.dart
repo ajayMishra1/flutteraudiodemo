@@ -70,6 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String _firstSelected ;
   String   _secondSelected ;
   String _thirdSelected;
+  String _fourthSelected ;
   String _userSelected ;
   String URI = "https://jamunity.oneclickitmarketing.co.in";
 
@@ -122,6 +123,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
     }else if(str == "Khanjari"){
       audioCache2.play("khanjari.mp3");
+
+    }else if(str == "Clave"){
+      audioCache2.play("clave.mp3");
 
     }
   }
@@ -208,19 +212,23 @@ class _MyHomePageState extends State<MyHomePage> {
     if(_thirdSelected == null || _thirdSelected == "") {
       _thirdSelected = "0";
     }
+    if(_fourthSelected == null || _fourthSelected == "") {
+      _fourthSelected = "0";
+    }
 
     if(int.parse(_userSelected) == 0){
       showToast("Please select user first");
-    }else if(int.parse(_firstSelected) == 0 && int.parse(_secondSelected) == 0 && int.parse(_thirdSelected) == 0){
+    }else if(int.parse(_firstSelected) == 0 && int.parse(_secondSelected) == 0 && int.parse(_thirdSelected) == 0
+        && int.parse(_fourthSelected) == 0){
       showToast("Please select at least one instrument quantity first");
 
     }
-    else if((int.parse(_firstSelected) + int.parse(_secondSelected)+ int.parse(_thirdSelected)) > int.parse(_userSelected)){
+    else if((int.parse(_firstSelected) + int.parse(_secondSelected)+ int.parse(_thirdSelected)+ int.parse(_fourthSelected)) > int.parse(_userSelected)){
       showToast("Instrument quantity is high then user quantity");
 
     }else{
 
-      var totalcount = int.parse(_firstSelected) + int.parse(_secondSelected)+ int.parse(_thirdSelected);
+      var totalcount = int.parse(_firstSelected) + int.parse(_secondSelected)+ int.parse(_thirdSelected)+ int.parse(_fourthSelected);
       if(_totalAudioCounts != null){
         if(_totalAudioCounts.length > 0){
           _totalAudioCounts.removeRange(0, _totalAudioCounts.length);
@@ -235,6 +243,9 @@ class _MyHomePageState extends State<MyHomePage> {
         }
         for(var x = 0; x < int.parse(_thirdSelected); x ++){
           _totalAudioCounts.add("khanjari.mp3");
+        }
+        for(var x = 0; x < int.parse(_fourthSelected); x ++){
+          _totalAudioCounts.add("clave.mp3");
         }
 
       }else{
@@ -270,6 +281,19 @@ class _MyHomePageState extends State<MyHomePage> {
               var first = totalCountThird.toInt();
               for (var x = 0; x < first; x ++) {
                 _totalAudioCounts.add("khanjari.mp3");
+              }
+            }
+          }
+        }
+
+        if(_fourthSelected != null ) {
+          if (_fourthSelected.length > 0) {
+            if (int.parse(_fourthSelected) > 0) {
+              var totalCountThird = 10 * int.parse(_fourthSelected) /
+                  int.parse(_userSelected);
+              var first = totalCountThird.toInt();
+              for (var x = 0; x < first; x ++) {
+                _totalAudioCounts.add("clave.mp3");
               }
             }
           }
