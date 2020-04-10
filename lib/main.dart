@@ -103,25 +103,34 @@ String _firstSelected ;
       pprint(data);
       socket.emit("joinjam", ["{name: Manthan}"]);
     });
-    socket.onConnectError(pprint);
-    socket.onConnectTimeout(pprint);
-    socket.onError(pprint);
-    socket.onDisconnect(pprint);
-    socket.on("type:string", (data) => pprint("type:string | $data"));
-    socket.on("type:bool", (data) => pprint("type:bool | $data"));
-    socket.on("type:number", (data) => pprint("type:number | $data"));
-    socket.on("type:object", (data) => pprint("type:object | $data"));
-    socket.on("type:list", (data) => pprint("type:list | $data"));
-    socket.on("message", (data) => pprint(data));
+    socket.on("play", (data){   //sample event
+      print("play");
+      print(data);
+      setupSound(data.toString());
+    });
+
     socket.connect();
     sockets[identifier] = socket;
   }
 
-  sendMessage(identifier) {
+  setupSound(String str){
+    if(str == "Bell"){
+      audioCache.play("bell.mp3");
+
+    }else if(str == "Drum"){
+      audioCache1.play("drum.mp3");
+
+    }else if(str == "Khanjari"){
+      audioCache2.play("khanjari.mp3");
+
+    }
+  }
+
+  sendMessage(identifier, String strType) {
     if (sockets[identifier] != null) {
       pprint("sending message from '$identifier'...");
       sockets[identifier].emit("playinstrument", [
-        "Drum"
+        strType
       ]);
       pprint("Message emitted from '$identifier'...");
     }
@@ -167,6 +176,17 @@ String _firstSelected ;
        advancedPlayer9 = new AudioPlayer();
     audioCache9 = new AudioCache(fixedPlayer: advancedPlayer9);
 
+    advancedPlayer.setVolume(_value);
+    advancedPlayer1.setVolume(_value);
+
+    advancedPlayer2.setVolume(_value);
+    advancedPlayer3.setVolume(_value);
+    advancedPlayer4.setVolume(_value);
+    advancedPlayer5.setVolume(_value);
+    advancedPlayer6.setVolume(_value);
+    advancedPlayer7.setVolume(_value);
+    advancedPlayer8.setVolume(_value);
+    advancedPlayer9.setVolume(_value);
     // advancedPlayer.playerId = "ajay1";
     // if(advancedPlayer.playerId == "ajay1"){
 
@@ -175,91 +195,91 @@ String _firstSelected ;
 
   void playMusic() {
 
-    sendMessage("default");
-//    if(_userSelected == null || _userSelected == "") {
-//      _userSelected = "0";
-//    }
-//    if(_firstSelected == null || _firstSelected == "") {
-//      _firstSelected = "0";
-//    }
-//    if(_secondSelected == null || _secondSelected == "") {
-//      _secondSelected = "0";
-//    }
-//    if(_thirdSelected == null || _thirdSelected == "") {
-//      _thirdSelected = "0";
-//    }
-//
-//      if(int.parse(_userSelected) == 0){
-//     showToast("Please select user first");
-//    }else if(int.parse(_firstSelected) == 0 && int.parse(_secondSelected) == 0 && int.parse(_thirdSelected) == 0){
-//     showToast("Please select at least one instrument quantity first");
-//
-//    }
-//    else if((int.parse(_firstSelected) + int.parse(_secondSelected)+ int.parse(_thirdSelected)) > int.parse(_userSelected)){
-//           showToast("Instrument quantity is high then user quantity");
-//
-//    }else{
-//
-//      var totalcount = int.parse(_firstSelected) + int.parse(_secondSelected)+ int.parse(_thirdSelected);
-//    if(_totalAudioCounts != null){
-//      if(_totalAudioCounts.length > 0){
-//        _totalAudioCounts.removeRange(0, _totalAudioCounts.length);
-//        }
-//    }
-//      if(totalcount < 10){
-//        for(var x = 0; x < int.parse(_firstSelected); x ++){
-//          _totalAudioCounts.add("bell.mp3");
-//        }
-//        for(var x = 0; x < int.parse(_secondSelected); x ++){
-//          _totalAudioCounts.add("drum.mp3");
-//        }
-//        for(var x = 0; x < int.parse(_thirdSelected); x ++){
-//          _totalAudioCounts.add("khanjari.mp3");
-//        }
-//
-//      }else{
-//        if(_firstSelected != null ) {
-//          if(_firstSelected.length > 0) {
-//            if (int.parse(_firstSelected) > 0) {
-//              var totalCountFirst = 10 * int.parse(_firstSelected) /
-//                  int.parse(_userSelected);
-//              var first = totalCountFirst.toInt();
-//              for (var x = 0; x < first; x ++) {
-//                _totalAudioCounts.add("bell.mp3");
-//              }
-//            }
-//          }
-//        }
-//        if(_secondSelected != null ) {
-//          if (_secondSelected.length > 0) {
-//            if (int.parse(_secondSelected) > 0) {
-//              var totalCountSecond = 10 * int.parse(_secondSelected) /
-//                  int.parse(_userSelected);
-//              var first = totalCountSecond.toInt();
-//              for (var x = 0; x < first; x ++) {
-//                _totalAudioCounts.add("drum.mp3");
-//              }
-//            }
-//          }
-//        }
-//        if(_thirdSelected != null ) {
-//          if (_thirdSelected.length > 0) {
-//            if (int.parse(_thirdSelected) > 0) {
-//              var totalCountThird = 10 * int.parse(_thirdSelected) /
-//                  int.parse(_userSelected);
-//              var first = totalCountThird.toInt();
-//              for (var x = 0; x < first; x ++) {
-//                _totalAudioCounts.add("khanjari.mp3");
-//              }
-//            }
-//          }
-//        }
-//      }
-//    }
-//
-//
-//    print(_totalAudioCounts);
-//  playAudio();
+  //  sendMessage("default");
+    if(_userSelected == null || _userSelected == "") {
+      _userSelected = "0";
+    }
+    if(_firstSelected == null || _firstSelected == "") {
+      _firstSelected = "0";
+    }
+    if(_secondSelected == null || _secondSelected == "") {
+      _secondSelected = "0";
+    }
+    if(_thirdSelected == null || _thirdSelected == "") {
+      _thirdSelected = "0";
+    }
+
+      if(int.parse(_userSelected) == 0){
+     showToast("Please select user first");
+    }else if(int.parse(_firstSelected) == 0 && int.parse(_secondSelected) == 0 && int.parse(_thirdSelected) == 0){
+     showToast("Please select at least one instrument quantity first");
+
+    }
+    else if((int.parse(_firstSelected) + int.parse(_secondSelected)+ int.parse(_thirdSelected)) > int.parse(_userSelected)){
+           showToast("Instrument quantity is high then user quantity");
+
+    }else{
+
+      var totalcount = int.parse(_firstSelected) + int.parse(_secondSelected)+ int.parse(_thirdSelected);
+    if(_totalAudioCounts != null){
+      if(_totalAudioCounts.length > 0){
+        _totalAudioCounts.removeRange(0, _totalAudioCounts.length);
+        }
+    }
+      if(totalcount < 10){
+        for(var x = 0; x < int.parse(_firstSelected); x ++){
+          _totalAudioCounts.add("bell.mp3");
+        }
+        for(var x = 0; x < int.parse(_secondSelected); x ++){
+          _totalAudioCounts.add("drum.mp3");
+        }
+        for(var x = 0; x < int.parse(_thirdSelected); x ++){
+          _totalAudioCounts.add("khanjari.mp3");
+        }
+
+      }else{
+        if(_firstSelected != null ) {
+          if(_firstSelected.length > 0) {
+            if (int.parse(_firstSelected) > 0) {
+              var totalCountFirst = 10 * int.parse(_firstSelected) /
+                  int.parse(_userSelected);
+              var first = totalCountFirst.toInt();
+              for (var x = 0; x < first; x ++) {
+                _totalAudioCounts.add("bell.mp3");
+              }
+            }
+          }
+        }
+        if(_secondSelected != null ) {
+          if (_secondSelected.length > 0) {
+            if (int.parse(_secondSelected) > 0) {
+              var totalCountSecond = 10 * int.parse(_secondSelected) /
+                  int.parse(_userSelected);
+              var first = totalCountSecond.toInt();
+              for (var x = 0; x < first; x ++) {
+                _totalAudioCounts.add("drum.mp3");
+              }
+            }
+          }
+        }
+        if(_thirdSelected != null ) {
+          if (_thirdSelected.length > 0) {
+            if (int.parse(_thirdSelected) > 0) {
+              var totalCountThird = 10 * int.parse(_thirdSelected) /
+                  int.parse(_userSelected);
+              var first = totalCountThird.toInt();
+              for (var x = 0; x < first; x ++) {
+                _totalAudioCounts.add("khanjari.mp3");
+              }
+            }
+          }
+        }
+      }
+    }
+
+
+    print(_totalAudioCounts);
+  playAudio();
   }
 
   void playAudio(){
@@ -377,133 +397,37 @@ String _firstSelected ;
         child: Column(
           children: <Widget>[
             SizedBox(height: 50,),
-            Text("Select Number of users:"),
-            SizedBox(height: 10,),
-
-            DropdownButton(
-            hint: Text('Users'), // Not necessary for Option 1
-            value: _userSelected,
-            onChanged: (newValue) {
-              setState(() {
-                _userSelected = newValue;
-              });
-            },
-            items: _numberOfUsers.map((location) {
-              return DropdownMenuItem(
-                child: new Text(location),
-                value: location,
-              );
-            }).toList(),
-            ),
-                
-             SizedBox(height: 20,),
 
             Row(
               children: <Widget>[
-                Expanded(child: 
-                Column(
-          children: <Widget>[
-           Text("Bell :"),
-            SizedBox(height: 10,),
 
-            DropdownButton(
-            hint: Text('Select'), // Not necessary for Option 1
-            value: _firstSelected,
-            onChanged: (newValue) {
-              setState(() {
-                _firstSelected = newValue;
-              });
-            },
-            items: _firstPlayerUsers.map((location) {
-              return DropdownMenuItem(
-                child: new Text(location),
-                value: location,
-              );
-            }).toList(),
-            ),
-          ])
+             Expanded(
+               child:  RaisedButton(
+                   child: Text("Play Bell"), onPressed:(){
+                 sendMessage("default","Bell");
+               }),
+             ),
+                SizedBox(
+                  width: 20,
                 ),
-                 Expanded(child: 
-                Column(
-          children: <Widget>[
-           Text("Drum:"),
-            SizedBox(height: 10,),
+                Expanded(
+                  child: RaisedButton(
+                    child: Text("Play Drum"),  onPressed: (){
+                    sendMessage("default","Drum");
+                }
+                ))
+                ,
 
-            DropdownButton(
-            hint: Text('Select'), // Not necessary for Option 1
-            value: _secondSelected,
-            onChanged: (newValue) {
-              setState(() {
-                _secondSelected = newValue;
-              });
-            },
-            items: _firstPlayerUsers.map((location) {
-              return DropdownMenuItem(
-                child: new Text(location),
-                value: location,
-              );
-            }).toList(),
-            ),
-          ])
-                ),
-                 Expanded(child: 
-                Column(
-          children: <Widget>[
-           Text("Khanjari:"),
-            SizedBox(height: 10,),
-
-            DropdownButton(
-            hint: Text('Select'), // Not necessary for Option 1
-            value: _thirdSelected
-            ,
-            onChanged: (newValue) {
-              setState(() {
-                _thirdSelected = newValue;
-              });
-            },
-            items: _firstPlayerUsers.map((location) {
-              return DropdownMenuItem(
-                child: new Text(location),
-                value: location,
-              );
-            }).toList(),
-            ),
-          ])
-                ),
-              ]
-            ),
-            SizedBox(height: 100),
-
-            Text("Choose Volume :"),
-
-            SizedBox(height: 10),
-
-            Slider(
-              min: 0,
-              max: 1,
-              value: _value,
-              onChanged: (value) {
-                setState(() {
-                  _value = value;
-                  volumechange();
-                });
-              },
-             // label: "$_value",
-
-
+              ],
             ),
 
-            SizedBox(height: 100),
-
+            SizedBox(height: 30,),
 
             RaisedButton(
-                child: Text("Play"), onPressed:(){
-          playMusic();
-                }),
-            RaisedButton(
-                child: Text("Stop"),  onPressed: (){
-                stop("stop");
-                }),
+                child: Text("Play Khanjari"), onPressed:(){
+              sendMessage("default","Khanjari");
+            }),
+
 
           ],
         ),
