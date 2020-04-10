@@ -25,6 +25,5 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/bell.mp3
-    - assets/drum.mp3
-    - assets/khanjari.mp3
+    - assets/
+    - assets/image/
