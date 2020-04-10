@@ -82,7 +82,7 @@ String _firstSelected ;
   void initState() {
     super.initState();
     // _socketBloc = new SocketBloc();
-    // _socketBloc.connect();z
+    // _socketBloc.connect();
     initPlayer();
     manager = SocketIOManager();
     initSocket("default");
@@ -366,7 +366,7 @@ String _firstSelected ;
     advancedPlayer9.setVolume(_value);
   }
 
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -395,12 +395,12 @@ String _firstSelected ;
               );
             }).toList(),
             ),
-                
+
              SizedBox(height: 20,),
 
             Row(
               children: <Widget>[
-                Expanded(child: 
+                Expanded(child:
                 Column(
           children: <Widget>[
            Text("Bell :"),
@@ -423,7 +423,7 @@ String _firstSelected ;
             ),
           ])
                 ),
-                 Expanded(child: 
+                 Expanded(child:
                 Column(
           children: <Widget>[
            Text("Drum:"),
@@ -446,7 +446,7 @@ String _firstSelected ;
             ),
           ])
                 ),
-                 Expanded(child: 
+                 Expanded(child:
                 Column(
           children: <Widget>[
            Text("Khanjari:"),
